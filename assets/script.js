@@ -3,8 +3,8 @@ const spinBtn = document.getElementById("spin-btn");
 const finalValue = document.getElementById("final-value");
 //Object that stores values of minimum and maximum angle for a value
 const rotationValues = [
-  { minDegree: 0, maxDegree: 30, value: "Ja'Marr Chase" },
-  { minDegree: 31, maxDegree: 90, value: "Justin Jefferson" },
+  { minDegree: 0, maxDegree: 60, value: "Ja'Marr Chase" },
+  { minDegree: 61, maxDegree: 90, value: "Justin Jefferson" },
   { minDegree: 91, maxDegree: 150, value: "Cooper Kupp" },
   { minDegree: 151, maxDegree: 210, value: "Tyreek Hill" },
   { minDegree: 211, maxDegree: 270, value: "Stefon Diggs" },
