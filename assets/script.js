@@ -1,140 +1,105 @@
-// Hello everyone! If you're wondering how I made this small function, I simply made two arrays. One of the arrays contained a list of adjectives, while the other contained a list of objects. Then, I wrote a function to choose one random adjective and one random object and then put them together. I hope you enjoy using the Random Name Generator! //
-
-var adjective = [
-  "Excited",
-  "Anxious",
-  "Overweight",
-  "Demonic",
-  "Jumpy",
-  "Misunderstood",
-  "Squashed",
-  "Gargantuan",
-  "Broad",
-  "Crooked",
-  "Curved",
-  "Deep",
-  "Even",
-  "Excited",
-  "Anxious",
-  "Overweight",
-  "Demonic",
-  "Jumpy",
-  "Misunderstood",
-  "Squashed",
-  "Gargantuan",
-  "Broad",
-  "Crooked",
-  "Curved",
-  "Deep",
-  "Even",
-  "Flat",
-  "Hilly",
-  "Jagged",
-  "Round",
-  "Shallow",
-  "Square",
-  "Steep",
-  "Straight",
-  "Thick",
-  "Thin",
-  "Cooing",
-  "Deafening",
-  "Faint",
-  "Harsh",
-  "High-pitched",
-  "Hissing",
-  "Hushed",
-  "Husky",
-  "Loud",
-  "Melodic",
-  "Moaning",
-  "Mute",
-  "Noisy",
-  "Purring",
-  "Quiet",
-  "Raspy",
-  "Screeching",
-  "Shrill",
-  "Silent",
-  "Soft",
-  "Squeaky",
-  "Squealing",
-  "Thundering",
-  "Voiceless",
-  "Whispering",
+const wheel = document.getElementById("wheel");
+const spinBtn = document.getElementById("spin-btn");
+const finalValue = document.getElementById("final-value");
+//Object that stores values of minimum and maximum angle for a value
+const rotationValues = [
+  { minDegree: 0, maxDegree: 30, value: "Ja'Marr Chase" },
+  { minDegree: 31, maxDegree: 90, value: "Justin Jefferson" },
+  { minDegree: 91, maxDegree: 150, value: "Cooper Kupp" },
+  { minDegree: 151, maxDegree: 210, value: "Tyreek Hill" },
+  { minDegree: 211, maxDegree: 270, value: "Stefon Diggs" },
+  { minDegree: 271, maxDegree: 330, value: "Devante Adams" },
+  { minDegree: 331, maxDegree: 360, value: "Ja'Marr Chase" },
 ];
-var object = [
-  "Taco",
-  "Operating System",
-  "Sphere",
-  "Watermelon",
-  "Cheeseburger",
-  "Apple Pie",
-  "Spider",
-  "Dragon",
-  "Remote Control",
-  "Soda",
-  "Barbie Doll",
-  "Watch",
-  "Purple Pen",
-  "Dollar Bill",
-  "Stuffed Animal",
-  "Hair Clip",
-  "Sunglasses",
-  "T-shirt",
-  "Purse",
-  "Towel",
-  "Hat",
-  "Camera",
-  "Hand Sanitizer Bottle",
-  "Photo",
-  "Dog Bone",
-  "Hair Brush",
-  "Birthday Card",
+//Size of each piece
+const data = [16, 16, 16, 16, 16, 16];
+//background color for each piece
+var pieColors = [
+  "#8b35bc",
+  "#b163da",
+  "#8b35bc",
+  "#b163da",
+  "#8b35bc",
+  "#b163da",
 ];
-var list;
+//Create chart
+let myChart = new Chart(wheel, {
+  //Plugin for displaying text on pie chart
+  plugins: [ChartDataLabels],
+  //Chart Type Pie
+  type: "pie",
+  data: {
+    //Labels(values which are to be displayed on chart)
+    labels: ["Justin Jefferson", "Ja'Marr Chase", "DeVante Adams", "Stefon Diggs", "Tyreek Hill", "Cooper Kupp"],
+    //Settings for dataset/pie
+    datasets: [
+      {
+        backgroundColor: pieColors,
+        data: data,
+      },
+    ],
+  },
+  options: {
+    //Responsive chart
+    responsive: true,
+    animation: { duration: 0 },
+    plugins: {
+      //hide tooltip and legend
+      tooltip: false,
+      legend: {
+        display: false,
+      },
+      //display labels inside pie chart
+      datalabels: {
+        color: "#ffffff",
+        formatter: (_, context) => context.chart.data.labels[context.dataIndex],
+        font: { size: 14 },
+      },
+    },
+  },
+});
+//display value based on the randomAngle
+const valueGenerator = (angleValue) => {
+  for (let i of rotationValues) {
+    //if the angleValue is between min and max then display it
+    if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
+      finalValue.innerHTML = `<p>Start: ${i.value}</p>`;
+      spinBtn.disabled = false;
+      break;
+    }
+  }
+};
 
-function generator() {
-  document.getElementById("name").innerHTML =
-    adjective[Math.floor(Math.random() * adjective.length)] +
-    " " +
-    object[Math.floor(Math.random() * object.length)];
-}
-
-// async function fetchData(url) {
-//     try {
-//       const response = await fetch(url);
-//       if (!response.ok) {
-//         throw new Error('Network response was not ok');
-//       }
-//       return response.json();
-//     } catch (error) {
-//       console.error('Unable to fetch data:', error);
-//     }
-//   }
-
-//   function fetchNames(nameType) {
-//     return fetchData(`https://www.randomlists.com/data/names-${nameType}.json`);
-//   }
-
-//   function pickRandom(list) {
-//     return list[Math.floor(Math.random() * list.length)];
-//   }
-
-//   async function generateName(gender) {
-//     try {
-//       const response = await Promise.all([
-//         fetchNames(gender || pickRandom(['male', 'female'])),
-//         fetchNames('surnames')
-//       ]);
-
-//       const [firstNames, lastNames] = response;
-
-//       const firstName = pickRandom(firstNames.data);
-//       const lastName = pickRandom(lastNames.data);
-
-//       return `${firstName} ${lastName}`;
-//     } catch(error) {
-//       console.error('Unable to generate name:', error);
-//     }
-//   }
+//Spinner count
+let count = 0;
+//100 rotations for animation and last rotation for result
+let resultValue = 101;
+//Start spinning
+spinBtn.addEventListener("click", () => {
+  spinBtn.disabled = true;
+  //Empty final value
+  finalValue.innerHTML = `<p>Good Luck!</p>`;
+  //Generate random degrees to stop at
+  let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
+  //Interval for rotation animation
+  let rotationInterval = window.setInterval(() => {
+    //Set rotation for piechart
+    /*
+    Initially to make the piechart rotate faster we set resultValue to 101 so it rotates 101 degrees at a time and this reduces by 1 with every count. Eventually on last rotation we rotate by 1 degree at a time.
+    */
+    myChart.options.rotation = myChart.options.rotation + resultValue;
+    //Update chart with new value;
+    myChart.update();
+    //If rotation>360 reset it back to 0
+    if (myChart.options.rotation >= 360) {
+      count += 1;
+      resultValue -= 5;
+      myChart.options.rotation = 0;
+    } else if (count > 15 && myChart.options.rotation == randomDegree) {
+      valueGenerator(randomDegree);
+      clearInterval(rotationInterval);
+      count = 0;
+      resultValue = 101;
+    }
+  }, 10);
+});
