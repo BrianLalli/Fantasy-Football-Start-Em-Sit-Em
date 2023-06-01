@@ -1,37 +1,21 @@
 const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spin-btn");
 const finalValue = document.getElementById("final-value");
-//Object that stores values of minimum and maximum angle for a value
-const rotationValues = [
-  { minDegree: 0, maxDegree: 60, value: "Ja'Marr Chase" },
-  { minDegree: 61, maxDegree: 90, value: "Justin Jefferson" },
-  { minDegree: 91, maxDegree: 150, value: "Cooper Kupp" },
-  { minDegree: 151, maxDegree: 210, value: "Tyreek Hill" },
-  { minDegree: 211, maxDegree: 270, value: "Stefon Diggs" },
-  { minDegree: 271, maxDegree: 330, value: "Devante Adams" },
-  { minDegree: 331, maxDegree: 360, value: "Ja'Marr Chase" },
-];
-//Size of each piece
-const data = [16, 16, 16, 16, 16, 16];
-//background color for each piece
-var pieColors = [
-  "#0378A6",
-  "#049DBF",
-  "#0378A6",
-  "#049DBF",
-  "#0378A6",
-  "#049DBF",
-];
-//Create chart
-let myChart = new Chart(wheel, {
-  //Plugin for displaying text on pie chart
-  plugins: [ChartDataLabels],
-  //Chart Type Pie
+const optionInput = document.getElementById("option-input");
+const addBtn = document.getElementById("add-btn");
+
+let options = []; // Array to store the options
+
+const rotationValues = []; // Object that stores values of minimum and maximum angle for a value
+const pieColors = []; // Background color for each piece
+let data = []; // Size of each piece
+
+// Create chart
+const myChart = new Chart(wheel, {
+  plugins: [ChartDataLabels], // Plugin for displaying text on pie chart
   type: "pie",
   data: {
-    //Labels(values which are to be displayed on chart)
-    labels: ["Justin Jefferson", "Ja'Marr Chase", "DeVante Adams", "Stefon Diggs", "Tyreek Hill", "Cooper Kupp"],
-    //Settings for dataset/pie
+    labels: options, // Labels (values which are to be displayed on the chart)
     datasets: [
       {
         backgroundColor: pieColors,
@@ -40,16 +24,13 @@ let myChart = new Chart(wheel, {
     ],
   },
   options: {
-    //Responsive chart
-    responsive: true,
+    responsive: true, // Responsive chart
     animation: { duration: 0 },
     plugins: {
-      //hide tooltip and legend
-      tooltip: false,
+      tooltip: false, // Hide tooltip
       legend: {
-        display: false,
+        display: false, // Hide legend
       },
-      //display labels inside pie chart
       datalabels: {
         color: "#ffffff",
         formatter: (_, context) => context.chart.data.labels[context.dataIndex],
@@ -58,10 +39,53 @@ let myChart = new Chart(wheel, {
     },
   },
 });
-//display value based on the randomAngle
+
+// Function to update the wheel with new options
+const updateWheel = () => {
+  rotationValues.length = 0;
+  pieColors.length = 0;
+  data.length = 0;
+
+  for (let i = 0; i < options.length; i++) {
+    const minDegree = (i * 360) / options.length;
+    const maxDegree = ((i + 1) * 360) / options.length;
+    rotationValues.push({ minDegree, maxDegree, value: options[i] });
+    pieColors.push(getRandomColor());
+    data.push(360 / options.length);
+  }
+
+  myChart.data.labels = options;
+  myChart.data.datasets[0].data = data;
+  myChart.data.datasets[0].backgroundColor = pieColors;
+  myChart.update();
+};
+
+// Function to handle adding a new option
+const addOption = () => {
+  const newOption = optionInput.value.trim();
+  if (newOption !== "") {
+    options.push(newOption);
+    optionInput.value = "";
+    updateWheel();
+  }
+};
+
+// Generate a random color
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+// Event listener for the add button
+addBtn.addEventListener("click", addOption);
+
+// Function to choose a random value based on the angle
 const valueGenerator = (angleValue) => {
   for (let i of rotationValues) {
-    //if the angleValue is between min and max then display it
     if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
       finalValue.innerHTML = `<p>Start: ${i.value}</p>`;
       spinBtn.disabled = false;
@@ -70,27 +94,16 @@ const valueGenerator = (angleValue) => {
   }
 };
 
-//Spinner count
 let count = 0;
-//100 rotations for animation and last rotation for result
 let resultValue = 101;
-//Start spinning
+
 spinBtn.addEventListener("click", () => {
   spinBtn.disabled = true;
-  //Empty final value
   finalValue.innerHTML = `<p>Good Luck!</p>`;
-  //Generate random degrees to stop at
   let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
-  //Interval for rotation animation
   let rotationInterval = window.setInterval(() => {
-    //Set rotation for piechart
-    /*
-    Initially to make the piechart rotate faster we set resultValue to 101 so it rotates 101 degrees at a time and this reduces by 1 with every count. Eventually on last rotation we rotate by 1 degree at a time.
-    */
     myChart.options.rotation = myChart.options.rotation + resultValue;
-    //Update chart with new value;
     myChart.update();
-    //If rotation>360 reset it back to 0
     if (myChart.options.rotation >= 360) {
       count += 1;
       resultValue -= 5;

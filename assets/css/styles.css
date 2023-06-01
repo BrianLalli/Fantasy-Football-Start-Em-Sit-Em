@@ -3,16 +3,23 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  color: black;
 }
+
 body {
   height: 100vh;
-  background: linear-gradient(135deg, #0487D9, #0367A6);
+  background: linear-gradient(135deg, #0487d9, #0367a6);
 }
+
 .wrapper {
   width: 90%;
   max-width: 34.37em;
   max-height: 90vh;
   background-color: #ffffff;
+  background-image: url("https://example.com/football-field-image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
@@ -21,30 +28,36 @@ body {
   border-radius: 1em;
   box-shadow: 0 4em 5em rgba(27, 8, 53, 0.2);
 }
+
 #title {
-  font-size: 1.5em;
+  font-size: 2em;
   text-align: center;
   margin-top: 0em;
   margin-bottom: 1em;
   color: #202020;
   font-weight: 500;
+  text-transform: uppercase;
 }
+
 .container {
   position: relative;
   width: 100%;
   height: 100%;
 }
+
 #wheel {
   max-height: inherit;
   width: inherit;
   top: 0;
   padding: 0;
 }
+
 @keyframes rotate {
   100% {
     transform: rotate(360deg);
   }
 }
+
 #spin-btn {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -62,19 +75,82 @@ body {
   letter-spacing: 0.1em;
   font-weight: 600;
 }
+
 img {
   position: absolute;
   width: 4em;
   top: 45%;
   right: -8%;
 }
+
 #final-value {
   font-size: 1.5em;
   text-align: center;
   margin-top: 1.5em;
   color: #202020;
   font-weight: 500;
+  border-radius: 0.5em;
+  background-color: #ffea00;
 }
+
+/* Added styles for the input section */
+#input-section {
+  width: 90%;
+  max-width: 34.37em;
+  margin: 0 auto;
+  margin-top: 1em;
+  padding-top: 1em;
+}
+
+#option-input {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: none;
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
+#add-btn {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: none;
+  background-color: #fdcf3b;
+  color: #202020;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Football design */
+body {
+  background-image: url("https://espn.com/photo/2022/0626/fantasy_football_draft_kit_1296x729.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: #202020;
+}
+
+.wrapper {
+  border: 0.2em solid #ffffff;
+  box-shadow: 0 1em 3em rgba(0, 0, 0, 0.3);
+}
+
+#spin-btn {
+  background: radial-gradient(#ffea00 50%, #ffbb00 85%);
+  color: #8c4003;
+}
+
+#final-value {
+  color: #ffffff;
+}
+
+#add-btn {
+  background-color: #ffea00;
+  color: #202020;
+}
+
 @media screen and (max-width: 768px) {
   .wrapper {
     font-size: 12px;
