@@ -89,6 +89,18 @@ img {
   right: -8%;
 }
 
+/* CSS Styles for the arrow */
+.arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px; /* Adjust the width of the arrow image as needed */
+  height: auto; /* Adjust the height of the arrow image as needed */
+  pointer-events: none; /* Make the arrow ignore mouse events */
+}
+
+
 #final-value {
   font-size: 1.5em;
   text-align: center;
