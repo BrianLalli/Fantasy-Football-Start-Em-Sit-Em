@@ -81,23 +81,51 @@ const getRandomColor = () => {
 };
 
 // Event listener for the add button
-addBtn.addEventListener("click", addOption);
+addBtn.addEventListener("click", () => {
+  console.log("Add button clicked");
+  addOption();
+});
+
+// Event listener for the add button and enter key
+const handleAddOption = () => {
+  const newOption = optionInput.value.trim();
+  if (newOption !== "") {
+    options.push(newOption);
+    optionInput.value = "";
+    updateWheel();
+  }
+};
+
+addBtn.addEventListener("click", handleAddOption);
+
+optionInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    handleAddOption();
+  }
+});
+
 
 // Function to choose a random value based on the angle
 const valueGenerator = (angleValue) => {
-  for (let i of rotationValues) {
-    if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
-      finalValue.innerHTML = `<p>Start: ${i.value}</p>`;
-      spinBtn.disabled = false;
-      break;
-    }
-  }
+  const rotation = angleValue % 360;
+  const sliceAngle = 360 / options.length;
+  
+  let selectedIndex = Math.floor((rotation + sliceAngle / 2) / sliceAngle);
+  selectedIndex %= options.length;
+  
+  const selectedOption = options[selectedIndex];
+
+  finalValue.innerHTML = `<p>Start: ${selectedOption}</p>`;
+  spinBtn.disabled = false;
+  console.log("Selected value:", selectedOption);
 };
 
 let count = 0;
 let resultValue = 101;
 
 spinBtn.addEventListener("click", () => {
+  console.log("Spin button clicked");
   spinBtn.disabled = true;
   finalValue.innerHTML = `<p>Good Luck!</p>`;
   let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
@@ -108,11 +136,12 @@ spinBtn.addEventListener("click", () => {
       count += 1;
       resultValue -= 5;
       myChart.options.rotation = 0;
-    } else if (count > 15 && myChart.options.rotation == randomDegree) {
+    } else if (count > 15 && myChart.options.rotation === randomDegree) {
       valueGenerator(randomDegree);
       clearInterval(rotationInterval);
       count = 0;
       resultValue = 101;
+      console.log("Final value:", finalValue.innerHTML);
     }
   }, 10);
 });
