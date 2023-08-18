@@ -90,7 +90,7 @@ img {
 }
 
 /* CSS Styles for the arrow */
-.arrow {
+#arrow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -98,8 +98,8 @@ img {
   width: 30px; /* Adjust the width of the arrow image as needed */
   height: auto; /* Adjust the height of the arrow image as needed */
   pointer-events: none; /* Make the arrow ignore mouse events */
+  background-image: url("https://www.nicepng.com/png/detail/40-405809_curve-arrow-pointing-left-svg-png-icon-free.png");
 }
-
 
 #final-value {
   font-size: 1.5em;
@@ -169,6 +169,8 @@ body {
   background-color: #ffea00;
   color: #202020;
 }
+
+
 
 @media screen and (max-width: 768px) {
   .wrapper {

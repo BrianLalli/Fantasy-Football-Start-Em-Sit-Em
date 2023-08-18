@@ -34,7 +34,7 @@ const myChart = new Chart(wheel, {
       datalabels: {
         color: "#ffffff",
         formatter: (_, context) => context.chart.data.labels[context.dataIndex],
-        font: { size: 14 },
+        font: { size: 16 },
       },
     },
   },
@@ -110,16 +110,29 @@ optionInput.addEventListener("keydown", (event) => {
 const valueGenerator = (angleValue) => {
   const rotation = angleValue % 360;
   const sliceAngle = 360 / options.length;
-  
+
   let selectedIndex = Math.floor((rotation + sliceAngle / 2) / sliceAngle);
   selectedIndex %= options.length;
-  
+
   const selectedOption = options[selectedIndex];
+
+  for (let i = 0; i < myChart.data.labels.length; i++) {
+    const label = myChart.getDatasetMeta(0).data[i].label;
+    const fontStyle = label === selectedOption ? "bold" : "normal";
+    const fontSize = label === selectedOption ? 18 : 16;
+    myChart.getDatasetMeta(0).data[i].font = {
+      size: fontSize,
+      weight: fontStyle,
+    };
+  }
+
+  myChart.update();
 
   finalValue.innerHTML = `<p>Start: ${selectedOption}</p>`;
   spinBtn.disabled = false;
   console.log("Selected value:", selectedOption);
 };
+
 
 let count = 0;
 let resultValue = 101;
@@ -127,7 +140,7 @@ let resultValue = 101;
 spinBtn.addEventListener("click", () => {
   console.log("Spin button clicked");
   spinBtn.disabled = true;
-  finalValue.innerHTML = `<p>Good Luck!</p>`;
+  finalValue.innerHTML = `<p>Calculating...</p>`;
   let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
   let rotationInterval = window.setInterval(() => {
     myChart.options.rotation = myChart.options.rotation + resultValue;
@@ -145,3 +158,4 @@ spinBtn.addEventListener("click", () => {
     }
   }, 10);
 });
+
