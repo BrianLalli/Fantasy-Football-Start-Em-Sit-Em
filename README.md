@@ -1,7 +1,7 @@
 # Fantasy-Football-Start-Em-Sit-Em
 
 ## Project Description
-As a fantasy football player, I tend to overthink lineup decisions. This simple app can save me time and headaches by randomly choosing a player for me to start each week.
+As a fantasy football player, I tend to overthink lineup decisions. This simple app can save me time and headaches by using a proprietary algorithm to dedice which players to start each week.
 <br>
 
 ## Demo
