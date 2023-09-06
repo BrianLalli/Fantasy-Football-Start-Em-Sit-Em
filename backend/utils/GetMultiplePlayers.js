@@ -1,4 +1,4 @@
-const getPlayerData = require('./getPlayerData');
+const getPlayerData = require('./GetMultiplePlayers');
 
 const getMultiplePlayers = async (playerName1, playerName2, weekNumber) => {
   try {

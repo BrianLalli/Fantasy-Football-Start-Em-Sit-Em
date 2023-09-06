@@ -1,4 +1,4 @@
-const { QBProjection, RBProjection, WRProjection, TEProjection, KProjection, DSTProjection } = require('./models');
+const { QBProjection, RBProjection, WRProjection, TEProjection, KProjection, DSTProjection } = require('./GetPlayerPosition');
 
 async function getPlayerPosition(playerName) {
   const projectionModels = [QBProjection, RBProjection, WRProjection, TEProjection, KProjection, DSTProjection];

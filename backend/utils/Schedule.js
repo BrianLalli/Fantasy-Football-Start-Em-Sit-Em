@@ -1,4 +1,4 @@
-const { Schedule } = require('./models');
+const { Schedule } = require('./Schedule');
 
 async function getCurrentWeekOpponent(teamName, weekNumber) {
   const weekColumnName = `week_${weekNumber}`;

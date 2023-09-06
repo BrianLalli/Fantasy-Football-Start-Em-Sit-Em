@@ -1,4 +1,4 @@
-const { PositionRank } = require('../models');
+const { PositionRank } = require('./GetAvgFPTS');
 
 const getAverageFantasyPoints = async (opponent_name, player_position) => {
   try {

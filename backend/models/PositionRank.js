@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-const sequelize = new Sequelize('your_database_name', 'username', 'password', {
+const sequelize = new Sequelize('fantasy football', 'postgre', 'ProRight50!', {
   host: 'localhost',
   dialect: 'postgres'
 });

@@ -1,4 +1,4 @@
-const { Schedule } = require('../models');
+const { Schedule } = require('./GetCurrentWkOpp');
 
 const getCurrentWeekOpponent = async (team_name, week_number) => {
   try {

@@ -1,5 +1,5 @@
 const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../config/connection");
+const sequelize = require("../config/database");
 
 class MultiplePlayerData extends Model {}
 

@@ -1,4 +1,4 @@
-const PlayerData = require('../models/PlayerData');
+const PlayerData = require('./GetPlayerData');
 
 const getPlayerData = async (playerName, weekNumber) => {
   try {
