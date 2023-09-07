@@ -3,6 +3,8 @@ const spinBtn = document.getElementById("spin-btn");
 const finalValue = document.getElementById("final-value");
 const optionInput = document.getElementById("option-input");
 const addBtn = document.getElementById("add-btn");
+const backendUrl = 'http://localhost:5423/api/fantasy'; // Back-end server URL
+
 
 let options = []; // Array to store the options
 const rotationValues = []; // Store rotation values for each option
@@ -61,18 +63,32 @@ const updateWheel = () => {
   myChart.update();
 };
 
+// New function to get the current NFL week
+const getCurrentWeek = () => {
+  const startDate = new Date('2023-09-07');
+  const currentDate = new Date();
+  const timeDifference = Math.abs(currentDate - startDate);
+  const weekNumber = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
+  return weekNumber;
+};
+
+
 // Function to handle adding a new option
 const addOption = async () => {
   const newOption = optionInput.value.trim();
-  if (newOption !== "") {
+  if (newOption !== "" && addedPlayers.length < 2) {
     addedPlayers.push(newOption);
     options.push(newOption);
     optionInput.value = "";
+  }
 
-    // Call the GetMultiplePlayers API to fetch player data
-    const response = await fetch(`/api/fantasy/multiple-players/${addedPlayers.join(",")}`);
-    const playerData = await response.json();
-    console.log(playerData);  // You can do something with the player data here
+  if (addedPlayers.length === 2) {
+    const weekNumber = getCurrentWeek();
+    const response = await fetch(`/api/fantasy/compare-players/${weekNumber}/${addedPlayers[0]}/${addedPlayers[1]}`);
+    const players = await response.json();
+
+    const bestPlayer = players[0].position_rank < players[1].position_rank ? players[0].name : players[1].name;
+    console.log(`Best Player to start in Week ${weekNumber}:`, bestPlayer);
 
     updateWheel();
   }

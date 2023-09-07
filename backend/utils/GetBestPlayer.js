@@ -1,29 +1,21 @@
-const BestPlayer = require('./GetBestPlayer');
-
-const getBestPlayer = async (weekNumber, position) => {
-  console.log(`Debug: getBestPlayer called with weekNumber=${weekNumber} and position=${position}`);
-
+const getBestPlayer = async (playerDataArray) => {
   try {
-    const bestPlayer = await BestPlayer.findAll({
-      where: {
-        weekNumber,
-        position
-      },
-      order: [
-        ['position_rank', 'ASC'],
-        ['avg_fantasy_points', 'DESC']
-      ]
-    });
-
-    console.log('Debug: Query result:', bestPlayer); // This will print the entire array, which might be big
-
-    if (!bestPlayer || bestPlayer.length === 0) {
-      console.log('Debug: No bestPlayer found');
+    if (!playerDataArray || playerDataArray.length === 0) {
       return null;
     }
 
-    console.log('Debug: Best player found:', bestPlayer[0]);
-    return bestPlayer[0]; // Return the first result after sorting
+    // Sort the player data array based on criteria
+    playerDataArray.sort((a, b) => {
+      if (a.position_rank < b.position_rank) return -1; // Lower rank is better
+      if (a.position_rank > b.position_rank) return 1;
+      
+      if (a.avg_fantasy_points > b.avg_fantasy_points) return -1; // Higher points as a tie-breaker
+      if (a.avg_fantasy_points < b.avg_fantasy_points) return 1;
+      
+      return 0;
+    });
+
+    return playerDataArray[0]; // The first element will be the best player based on the criteria
   } catch (err) {
     console.error('Error in getBestPlayer:', err);
     return null;

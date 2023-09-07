@@ -1,54 +1,59 @@
-const GetPlayerData = require("../utils/GetPlayerData");
-const GetMultiplePlayers = require("../utils/GetMultiplePlayers");
-const GetPlayerTeam = require("../utils/GetPlayerTeam");
-const GetPlayerPosition = require("../utils/GetPlayerPosition");
-const GetAvgFPTS = require("../utils/GetAvgFPTS");
-const GetPosRank = require("../utils/GetPosRank");
-const Schedule = require("../utils/Schedule");
-const GetBestPlayer = require("../utils/GetBestPlayer");
-
 const fantasyController = {
   async getPlayerData(req, res) {
-    // Renamed to match fantasyRoutes.js
-    const playerData = await GetPlayerData(req.params.name); // Changed the parameter name to match the route
+    console.log(`Controller: Inside getPlayerData for ${req.params.name}`);
+    const playerData = await GetPlayerData(req.params.name);
     res.json(playerData);
   },
   async getMultiplePlayers(req, res) {
-    // Renamed to match fantasyRoutes.js
-    const multiplePlayers = await GetMultiplePlayers(
-      req.params.name1,
-      req.params.name2
-    ); // Changed the parameter names to match the route
+    console.log(`Controller: Inside getMultiplePlayers for ${req.params.name1} and ${req.params.name2}`);
+    const multiplePlayers = await GetMultiplePlayers(req.params.name1, req.params.name2);
     res.json(multiplePlayers);
   },
   async getAvgFPTS(req, res) {
-    // Already matches
-    const avgFPTS = await GetAvgFPTS(req.params.name); // Changed the parameter name to match the route
+    console.log(`Controller: Inside getAvgFPTS for ${req.params.name}`);
+    const avgFPTS = await GetAvgFPTS(req.params.name);
     res.json(avgFPTS);
   },
   async getPositionRank(req, res) {
-    // Renamed to match fantasyRoutes.js
-    const rank = await GetPosRank(req.params.name); // Changed the parameter name to match the route
+    console.log(`Controller: Inside getPositionRank for ${req.params.name}`);
+    const rank = await GetPosRank(req.params.name);
     res.json(rank);
   },
   async getBestPlayer(req, res) {
-    console.log("Inside getBestPlayer"); // add this line
-    const bestPlayer = await GetBestPlayer(
-      req.params.weekNumber,
-      req.params.position
-    );
+    console.log(`Controller: Inside getBestPlayer for week ${req.params.weekNumber} and position ${req.params.position}`);
+    const bestPlayer = await GetBestPlayer(req.params.weekNumber, req.params.position);
     res.json(bestPlayer);
   },
   async getSchedule(req, res) {
-    // Added this to match fantasyRoutes.js
-    const schedule = await Schedule(req.params.team); // Changed the parameter name to match the route
+    console.log(`Controller: Inside getSchedule for team ${req.params.team}`);
+    const schedule = await Schedule(req.params.team);
     res.json(schedule);
   },
   async getCurrentWkOpp(req, res) {
-    // Renamed to match fantasyRoutes.js
-    const opp = await GetCurrentWkOpp(req.params.name); // Changed the parameter name to match the route
+    console.log(`Controller: Inside getCurrentWkOpp for ${req.params.name}`);
+    const opp = await GetCurrentWkOpp(req.params.name);
     res.json(opp);
   },
+  async comparePlayers(req, res) {
+    console.log(
+      `Controller: Inside comparePlayers for ${req.body.name1} and ${req.body.name2}`
+    );
+    const { name1, name2 } = req.body;
+  
+    try {
+      const bothPlayersData = await GetMultiplePlayers(name1, name2);
+  
+      // Assuming bothPlayersData is an array with two elements
+      const [playerData1, playerData2] = bothPlayersData;
+  
+      const decision = GetBestPlayer(playerData1, playerData2);
+      res.json(decision);
+    } catch (error) {
+      console.error("Error in comparePlayers: ", error);
+      res.status(500).json({ error: "An error occurred while comparing players" });
+    }
+  },
+  
 };
 
 module.exports = fantasyController;

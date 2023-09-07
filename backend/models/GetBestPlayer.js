@@ -1,5 +1,5 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../config/connection');
+const sequelize = require('../config/database');
 
 class BestPlayer extends Model {}
 
@@ -16,6 +16,10 @@ BestPlayer.init(
     },
     weekNumber: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    opponent_name: {
+      type: DataTypes.STRING,
       allowNull: false
     },
     position: {

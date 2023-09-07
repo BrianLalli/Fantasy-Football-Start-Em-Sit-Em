@@ -1,18 +1,20 @@
 const express = require('express');
-const db = require('./backend/config/database'); // Update path to match your folder structure
+const cors = require('cors'); // Import the cors package
+const db = require('./backend/config/database');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const BACKEND_PORT = process.env.BACKEND_PORT || 5423; // Use the correct port for your backend
 
 // Test database connection
 db.authenticate()
   .then(() => console.log('Database connected...'))
   .catch(err => console.log('Error: ' + err));
 
-const fantasyRoutes = require('./backend/routes/fantasyRoutes'); // Update path as per your folder structure
+// Use cors middleware to allow cross-origin requests
+app.use(cors()); // This allows requests from all origins. You can configure it for specific origins if needed.
 
-app.use('/api/fantasy', fantasyRoutes); // Prefix all routes with '/api/fantasy'
+const fantasyRoutes = require('./backend/routes/fantasyRoutes');
+app.use('/api/fantasy', fantasyRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(BACKEND_PORT, () => {
+  console.log(`Server is running on port ${BACKEND_PORT}`);
 });
-
