@@ -1,9 +1,11 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 
-const sequelize = new Sequelize('fantasy football', 'postgre', 'ProRight50!', {
-    host: 'localhost',
+const sequelize = new Sequelize('fantasy_football', 'postgres', 'ProRight50!', {
+  host: 'localhost',
+  port: 5432,
   dialect: 'postgres'
 });
+
 
 class DSTProjection extends Model {}
 

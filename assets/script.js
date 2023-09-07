@@ -8,6 +8,7 @@ let options = []; // Array to store the options
 const rotationValues = []; // Store rotation values for each option
 const pieColors = []; // Background color for each piece
 let data = []; // Size of each piece
+let addedPlayers = [];  // Array to store added player names
 
 // Create chart
 const myChart = new Chart(wheel, {
@@ -61,12 +62,18 @@ const updateWheel = () => {
 };
 
 // Function to handle adding a new option
-const addOption = () => {
+const addOption = async () => {
   const newOption = optionInput.value.trim();
   if (newOption !== "") {
-    console.log(`Adding new option: ${newOption}`);
+    addedPlayers.push(newOption);
     options.push(newOption);
     optionInput.value = "";
+
+    // Call the GetMultiplePlayers API to fetch player data
+    const response = await fetch(`/api/fantasy/multiple-players/${addedPlayers.join(",")}`);
+    const playerData = await response.json();
+    console.log(playerData);  // You can do something with the player data here
+
     updateWheel();
   }
 };
@@ -139,12 +146,16 @@ const valueGenerator = (angleValue) => {
 let count = 0;
 let resultValue = 101;
 
-spinBtn.addEventListener("click", () => {
+spinBtn.addEventListener("click", async () => {
   console.log("Spin button clicked");
   spinBtn.disabled = true;
   finalValue.innerHTML = `<p>Calculating...</p>`;
   let randomDegree = Math.floor(Math.random() * (355 - 0 + 1) + 0);
   console.log(`Random degree for stopping: ${randomDegree}`);
+    // Call the GetBestPlayer API right after spinning starts
+    const response = await fetch(`/api/fantasy/best-player/${addedPlayers.join(",")}`);
+    const bestPlayer = await response.json();
+    console.log('Best Player to start this week:', bestPlayer);
   let rotationInterval = window.setInterval(() => {
     myChart.options.rotation = myChart.options.rotation + resultValue;
     myChart.update();

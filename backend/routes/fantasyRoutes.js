@@ -1,13 +1,12 @@
 const router = require('express').Router();
-const fantasyController = require('../controllers/fantasyControllers'); // Update path as per your folder structure
+const fantasyController = require('../controllers/fantasyControllers');
 
 router.get('/player/:name', fantasyController.getPlayerData);
 router.get('/multiple-players/:name1/:name2', fantasyController.getMultiplePlayers);
 router.get('/avg-fpts/:name', fantasyController.getAvgFPTS);
 router.get('/position-rank/:name', fantasyController.getPositionRank);
-router.get('/best-player/:name1/:name2', fantasyController.getBestPlayer);
+router.get('/best-player/:weekNumber/:position', fantasyController.getBestPlayer); // Updated this line
 router.get('/schedule/:team', fantasyController.getSchedule);
-router.get('/current-week-opponent/:name', fantasyController.getCurrentWkOpp); // Added missing route
+router.get('/current-week-opponent/:name', fantasyController.getCurrentWkOpp);
 
 module.exports = router;
-

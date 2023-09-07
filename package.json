@@ -19,6 +19,7 @@
   "homepage": "https://github.com/BrianLalli/Fantasy-Football-Start-Em-Sit-Em#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "mysql2": "^3.6.0",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.32.1"

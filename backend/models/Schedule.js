@@ -1,7 +1,8 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize('fantasy football', 'postgres', 'ProRight50!', {
+const sequelize = new Sequelize('fantasy_football', 'postgres', 'ProRight50!', {
   host: 'localhost',
+  port: 5432,
   dialect: 'postgres'
 });
 

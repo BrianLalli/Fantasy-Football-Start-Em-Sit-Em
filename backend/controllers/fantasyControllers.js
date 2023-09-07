@@ -1,46 +1,54 @@
-const GetPlayerData = require('../utils/GetPlayerData');
-const GetMultiplePlayers = require('../utils/GetMultiplePlayers');
-const GetPlayerTeam = require('../utils/GetPlayerTeam');
-const GetPlayerPosition = require('../utils/GetPlayerPosition');
-const GetAvgFPTS = require('../utils/GetAvgFPTS');
-const GetPosRank = require('../utils/GetPosRank');
-const Schedule = require('../utils/Schedule');
-const GetBestPlayer = require('../utils/GetBestPlayer');
+const GetPlayerData = require("../utils/GetPlayerData");
+const GetMultiplePlayers = require("../utils/GetMultiplePlayers");
+const GetPlayerTeam = require("../utils/GetPlayerTeam");
+const GetPlayerPosition = require("../utils/GetPlayerPosition");
+const GetAvgFPTS = require("../utils/GetAvgFPTS");
+const GetPosRank = require("../utils/GetPosRank");
+const Schedule = require("../utils/Schedule");
+const GetBestPlayer = require("../utils/GetBestPlayer");
 
 const fantasyController = {
-  async getSinglePlayerData(req, res) {
-    const playerData = await GetPlayerData(req.params.playerName, req.params.weekNumber);
+  async getPlayerData(req, res) {
+    // Renamed to match fantasyRoutes.js
+    const playerData = await GetPlayerData(req.params.name); // Changed the parameter name to match the route
     res.json(playerData);
   },
-  async getTwoPlayersData(req, res) {
-    const multiplePlayers = await GetMultiplePlayers(req.params.playerName1, req.params.playerName2, req.params.weekNumber);
+  async getMultiplePlayers(req, res) {
+    // Renamed to match fantasyRoutes.js
+    const multiplePlayers = await GetMultiplePlayers(
+      req.params.name1,
+      req.params.name2
+    ); // Changed the parameter names to match the route
     res.json(multiplePlayers);
   },
-  async getPlayerTeam(req, res) {
-    const team = await GetPlayerTeam(req.params.playerName);
-    res.json(team);
-  },
-  async getPlayerPosition(req, res) {
-    const position = await GetPlayerPosition(req.params.playerName);
-    res.json(position);
-  },
   async getAvgFPTS(req, res) {
-    const avgFPTS = await GetAvgFPTS(req.params.playerName, req.params.position);
+    // Already matches
+    const avgFPTS = await GetAvgFPTS(req.params.name); // Changed the parameter name to match the route
     res.json(avgFPTS);
   },
-  async getPosRank(req, res) {
-    const rank = await GetPositionRank(req.params.playerName, req.params.position);
+  async getPositionRank(req, res) {
+    // Renamed to match fantasyRoutes.js
+    const rank = await GetPosRank(req.params.name); // Changed the parameter name to match the route
     res.json(rank);
   },
-  async getCurrentWeekOpp(req, res) {
-    const opp = await GetCurrentWkOpp(req.params.playerName);
+  async getBestPlayer(req, res) {
+    console.log("Inside getBestPlayer"); // add this line
+    const bestPlayer = await GetBestPlayer(
+      req.params.weekNumber,
+      req.params.position
+    );
+    res.json(bestPlayer);
+  },
+  async getSchedule(req, res) {
+    // Added this to match fantasyRoutes.js
+    const schedule = await Schedule(req.params.team); // Changed the parameter name to match the route
+    res.json(schedule);
+  },
+  async getCurrentWkOpp(req, res) {
+    // Renamed to match fantasyRoutes.js
+    const opp = await GetCurrentWkOpp(req.params.name); // Changed the parameter name to match the route
     res.json(opp);
   },
-  async getBestPlayer(req, res) {
-    const bestPlayer = await GetBestPlayer(req.params.position, req.params.weekNumber);
-    res.json(bestPlayer);
-  }
 };
 
 module.exports = fantasyController;
-
